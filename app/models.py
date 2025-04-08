@@ -13,3 +13,12 @@ class Post(Base):
     published = Column(Boolean, default=True, nullable=False)
     rating = Column(Float, default=0.0, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=False)
+    password = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False) 
