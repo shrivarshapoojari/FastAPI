@@ -10,7 +10,11 @@ from fastapi import Depends
 from typing import List  
 from ..database import get_db
 
-router = APIRouter()
+router = APIRouter(
+    
+       
+        tags=["Users"]
+)
 
 
 @router.post("/users",status_code=status.HTTP_201_CREATED,response_model=schemas.UserOut)

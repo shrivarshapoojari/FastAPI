@@ -12,7 +12,10 @@ from ..database import get_db
 
 from ..schemas import PostCreate
 
-router = APIRouter()
+router = APIRouter(
+
+    tags=["Posts"]
+)
 
 @router.get("/posts",response_model=List[schemas.Post])
 def get_posts(db: Session = Depends(get_db)):
