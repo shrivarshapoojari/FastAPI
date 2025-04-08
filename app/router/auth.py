@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Request, Response
 from sqlalchemy.orm import Session
 from ..database import get_db
 from .. import models, schemas, utils  
-
+from . import authUtil
 router = APIRouter( 
     tags=["Auth"],
     prefix="/auth"
@@ -17,7 +17,8 @@ def login(user_credentials:schemas.UserLogin ,  db:Session=Depends(get_db)):
     if not utils.verify(user_credentials.password,user.password):
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Invalid Credentials")
     
-    return {"token":"fake token"}
+    acess_token= authUtil.create_access_token(data={"user_id":user.id})
+    return {"access_token":acess_token, "token_type":"bearer"}
     
 
 
