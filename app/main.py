@@ -11,12 +11,18 @@ from fastapi import Depends
 from typing import List  
 from . import utils
 from  .router import post, user,auth
+from .config import settings
 models.Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
 
 
+
+
+
+print(settings.database_password)
 
 app.include_router(post.router)
 app.include_router(user.router)
