@@ -1,5 +1,5 @@
 from .database import Base
-from sqlalchemy import Column, Integer, String, Boolean, Float,DateTime
+from sqlalchemy import Column, Integer, String, Boolean, Float,DateTime,ForeignKey
 from sqlalchemy.sql import func
  
  
@@ -13,6 +13,7 @@ class Post(Base):
     published = Column(Boolean, default=True, nullable=False)
     rating = Column(Float, default=0.0, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id",ondelete="CASCADE") ,nullable=False)
 
 
 class User(Base):

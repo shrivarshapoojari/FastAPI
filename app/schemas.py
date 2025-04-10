@@ -9,6 +9,7 @@ class PostBase(BaseModel):
     content: str
     published: bool = True
     rating: Optional[float] = None
+  
 
 
 
@@ -22,6 +23,8 @@ class Post(PostBase):
     id: int
    
     created_at: datetime
+
+    owner_id: int
 
      
     

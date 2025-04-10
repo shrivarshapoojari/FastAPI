@@ -22,7 +22,7 @@ router = APIRouter(
 @router.get("/posts",response_model=List[schemas.Post])
 def get_posts(db: Session = Depends(get_db)
               ,
-                user_id:int=Depends(authUtil.get_current_user)
+                user:int=Depends(authUtil.get_current_user)
               ):
     posts = db.query(models.Post).all()
     return posts
@@ -34,7 +34,7 @@ def get_posts(db: Session = Depends(get_db)
 @router.get("/posts/{id}",response_model=schemas.Post)
 def get_post(id: int, db: Session = Depends(get_db)
              ,
-                user_id:int=Depends(authUtil.get_current_user)
+                user:int=Depends(authUtil.get_current_user)
              ):
     post = db.query(models.Post).filter(models.Post.id == id).first()
     if not post:
@@ -52,12 +52,14 @@ def get_post(id: int, db: Session = Depends(get_db)
              )
 def create_post(post: PostCreate, 
                 db: Session = Depends(get_db),
-                user_id:int=Depends(authUtil.get_current_user),
+                user:int=Depends(authUtil.get_current_user),
                 
                 
                 ):
-    print(user_id)
+    print(user)
+ 
     new_post = models.Post(**post.dict())
+    new_post.owner_id=user.id
     db.add(new_post)
     db.commit()
     db.refresh(new_post)
@@ -69,7 +71,7 @@ def create_post(post: PostCreate,
 @router.put("/posts/{id}",response_model=schemas.Post)
 def update_post(id: int, post: PostCreate, db: Session = Depends(get_db)
                 ,
-                user_id:int=Depends(authUtil.get_current_user)
+                user:int=Depends(authUtil.get_current_user)
                 ):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     updated_post = post_query.first()
@@ -86,7 +88,7 @@ def update_post(id: int, post: PostCreate, db: Session = Depends(get_db)
 @router.delete("/posts/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_post(id: int, db: Session = Depends(get_db)
                 ,
-                user_id:int=Depends(authUtil.get_current_user)
+                user:int=Depends(authUtil.get_current_user)
                 ):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     deleted_post = post_query.first()
